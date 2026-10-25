@@ -123,6 +123,7 @@ public final class MainFrame extends JFrame {
                 recordResult(outcome);
             }
         });
+        execution.addObserver(astTree);
         execution.addObserver(new InterpretTrace(console::log, traceItem::isSelected));
         console.onToggle(consoleItem::setSelected);
 
