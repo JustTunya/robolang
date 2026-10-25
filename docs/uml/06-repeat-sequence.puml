@@ -1,0 +1,42 @@
+@startuml 06-repeat-sequence
+title One run of  REPEAT 2 { MOVE }  (single variant)
+hide footbox
+
+participant ProgramRunner
+participant "ctx : Context" as Context
+participant "program : Program" as Program
+participant "main : BlockStmt" as Main
+participant "repeat : RepeatStmt" as Repeat
+participant "body : BlockStmt" as Body
+participant "move : MoveStmt" as Move
+participant "world : World" as World
+participant "listener : ExecutionListener" as Listener
+
+ProgramRunner -> Context ** : new Context(world, limits, listener, 0)
+ProgramRunner -> Listener : variantStarted(0, snapshot)
+ProgramRunner -> Program : execute(ctx)
+Program -> Main : interpret(ctx)
+Main -> Repeat : interpret(ctx)
+loop i = 0 .. count-1  (count = 2)
+  Repeat -> Context : tick(repeat)
+  Context -> Listener : nodeEntered(repeat)
+  Repeat -> Body : interpret(ctx)
+  Body -> Move : interpret(ctx)
+  Move -> Context : tick(move)
+  Context -> Listener : nodeEntered(move)
+  Move -> Context : move(move)
+  Context -> World : wallAhead()
+  World --> Context : false
+  Context -> World : moveForward()
+  Context -> World : snapshot()
+  World --> Context : WorldSnapshot
+  Context -> Listener : actionPerformed(move, snapshot)
+  note right of Listener
+    The UI listener may block here
+    to pace the run (speed, Step, Pause).
+  end note
+end
+Program --> ProgramRunner
+ProgramRunner -> World : atGoal(), itemsLeft()
+ProgramRunner -> ProgramRunner : build Outcome
+@enduml

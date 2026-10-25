@@ -1,0 +1,128 @@
+@startuml 04-abstract-factory-robolang
+title Abstract Factory pattern in RoboLang (package robolang.theme)
+hide empty members
+skinparam classAttributeIconSize 0
+
+package "robolang.theme" {
+  interface ThemeFactory <<AbstractFactory>> {
+    +name(): String
+    +createRobot(): RobotView
+    +createWall(): WallTile
+    +createFloor(): FloorTile
+    +createCollectible(): Collectible
+    +createGoal(): GoalTile
+  }
+  interface Paintable {
+    +paint(g: Graphics2D, cell: Rectangle)
+  }
+  interface RobotView <<AbstractProduct>> {
+    +paint(g: Graphics2D, cell: Rectangle, facing: Direction, progress: double)
+    +crashMessage(): String
+  }
+  interface WallTile <<AbstractProduct>>
+  interface FloorTile <<AbstractProduct>>
+  interface Collectible <<AbstractProduct>> {
+    +pickupMessage(): String
+  }
+  interface GoalTile <<AbstractProduct>>
+  class ThemeRegistry {
+    +{static} all(): List<ThemeFactory>
+    +{static} byName(name: String): ThemeFactory
+    +{static} defaultTheme(): ThemeFactory
+  }
+}
+
+package "robolang.theme.space" {
+  class SpaceThemeFactory <<ConcreteFactory>> {
+    +{static} INSTANCE
+  }
+  class Rover <<private>> <<ConcreteProduct>>
+  class Asteroid <<private>> <<ConcreteProduct>>
+  class MetalPlate <<private>> <<ConcreteProduct>>
+  class EnergyCrystal <<private>> <<ConcreteProduct>>
+  class LandingPad <<private>> <<ConcreteProduct>>
+}
+
+package "robolang.theme.jungle" {
+  class JungleThemeFactory <<ConcreteFactory>> {
+    +{static} INSTANCE
+  }
+  class Monkey <<private>> <<ConcreteProduct>>
+  class Tree <<private>> <<ConcreteProduct>>
+  class Grass <<private>> <<ConcreteProduct>>
+  class Banana <<private>> <<ConcreteProduct>>
+  class Hut <<private>> <<ConcreteProduct>>
+}
+
+package "robolang.theme.retro" {
+  class RetroThemeFactory <<ConcreteFactory>> {
+    +{static} INSTANCE
+  }
+  class PixelBot <<private>> <<ConcreteProduct>>
+  class Brick <<private>> <<ConcreteProduct>>
+  class DarkTile <<private>> <<ConcreteProduct>>
+  class Coin <<private>> <<ConcreteProduct>>
+  class Flag <<private>> <<ConcreteProduct>>
+}
+
+package "robolang.ui" {
+  class GridPanel <<Client>> {
+    +setTheme(theme: ThemeFactory)
+    +showSnapshot(snapshot: WorldSnapshot)
+  }
+}
+
+Paintable <|-- RobotView
+Paintable <|-- WallTile
+Paintable <|-- FloorTile
+Paintable <|-- Collectible
+Paintable <|-- GoalTile
+
+ThemeFactory <|.. SpaceThemeFactory
+ThemeFactory <|.. JungleThemeFactory
+ThemeFactory <|.. RetroThemeFactory
+
+RobotView <|.. Rover
+WallTile <|.. Asteroid
+FloorTile <|.. MetalPlate
+Collectible <|.. EnergyCrystal
+GoalTile <|.. LandingPad
+RobotView <|.. Monkey
+WallTile <|.. Tree
+FloorTile <|.. Grass
+Collectible <|.. Banana
+GoalTile <|.. Hut
+RobotView <|.. PixelBot
+WallTile <|.. Brick
+FloorTile <|.. DarkTile
+Collectible <|.. Coin
+GoalTile <|.. Flag
+
+SpaceThemeFactory *-- Rover
+SpaceThemeFactory *-- Asteroid
+SpaceThemeFactory *-- MetalPlate
+SpaceThemeFactory *-- EnergyCrystal
+SpaceThemeFactory *-- LandingPad
+JungleThemeFactory *-- Monkey
+JungleThemeFactory *-- Tree
+JungleThemeFactory *-- Grass
+JungleThemeFactory *-- Banana
+JungleThemeFactory *-- Hut
+RetroThemeFactory *-- PixelBot
+RetroThemeFactory *-- Brick
+RetroThemeFactory *-- DarkTile
+RetroThemeFactory *-- Coin
+RetroThemeFactory *-- Flag
+
+ThemeRegistry --> "3" ThemeFactory : ALL
+ThemeRegistry ..> SpaceThemeFactory
+ThemeRegistry ..> JungleThemeFactory
+ThemeRegistry ..> RetroThemeFactory
+
+GridPanel --> ThemeFactory
+GridPanel --> RobotView : robot
+GridPanel --> WallTile : wall
+GridPanel --> FloorTile : floor
+GridPanel --> Collectible : item
+GridPanel --> GoalTile : goal
+@enduml
