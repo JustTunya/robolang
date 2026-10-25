@@ -191,7 +191,7 @@ public final class ExecutionController implements ControlListener {
     private void finish(Outcome outcome) {
         view.clearHighlights();
         view.selectVariant(current.pacer.variant());
-        view.setCounters(current.pacer.actions(), current.pacer.ticks());
+        view.setCounters(outcome.totalActions(), outcome.totalTicks());
         if (current.shownActions != current.pacer.actions()) {
             view.showSnapshot(current.pacer.lastSnapshot(), 0);
         }
