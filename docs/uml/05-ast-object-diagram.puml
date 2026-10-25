@@ -1,0 +1,30 @@
+@startuml 05-ast-object-diagram
+title AST of: REPEAT 2 { MOVE IF WALL_AHEAD { TURN LEFT } }  (instruction count 4)
+
+object "program : Program" as program {
+  procedures = []
+}
+object "main : BlockStmt" as mainBlock
+object "repeat : RepeatStmt" as repeat {
+  count = 2
+}
+object "body : BlockStmt" as repeatBody
+object "move : MoveStmt" as move
+object "if : IfStmt" as ifStmt {
+  elseBranch = null
+}
+object "cond : WallAheadCond" as cond
+object "thenBlock : BlockStmt" as thenBlock
+object "turn : TurnStmt" as turn {
+  direction = LEFT
+}
+
+program --> mainBlock : main
+mainBlock --> repeat : statements[0]
+repeat --> repeatBody : body
+repeatBody --> move : statements[0]
+repeatBody --> ifStmt : statements[1]
+ifStmt --> cond : condition
+ifStmt --> thenBlock : thenBlock
+thenBlock --> turn : statements[0]
+@enduml

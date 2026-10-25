@@ -1,0 +1,167 @@
+@startuml 02-interpreter-robolang
+title Interpreter pattern in RoboLang (package robolang.lang)
+hide empty members
+skinparam classAttributeIconSize 0
+
+package "robolang.lang.ast" {
+  interface AstNode <<sealed>> {
+    +range(): SourceRange
+    +label(): String
+    +instructionCount(): int
+  }
+  interface Statement <<AbstractExpression>> <<sealed>> {
+    +interpret(ctx: Context)
+  }
+  interface BoolExpression <<AbstractExpression>> <<sealed>> {
+    +evaluate(ctx: Context): boolean
+  }
+  class Program <<record>> {
+    +procedures: List<ProcDef>
+    +main: BlockStmt
+    +execute(ctx: Context)
+  }
+  class ProcDef <<record>> {
+    +name: String
+    +body: BlockStmt
+  }
+
+  class MoveStmt <<TerminalExpression>> <<record>>
+  class TurnStmt <<TerminalExpression>> <<record>> {
+    +direction: TurnDirection
+  }
+  class PickStmt <<TerminalExpression>> <<record>>
+  class WallAheadCond <<TerminalExpression>> <<record>>
+  class OnItemCond <<TerminalExpression>> <<record>>
+  class AtGoalCond <<TerminalExpression>> <<record>>
+
+  class BlockStmt <<NonterminalExpression>> <<record>> {
+    +statements: List<Statement>
+  }
+  class RepeatStmt <<NonterminalExpression>> <<record>> {
+    +count: int
+    +body: BlockStmt
+  }
+  class WhileStmt <<NonterminalExpression>> <<record>> {
+    +condition: BoolExpression
+    +body: BlockStmt
+  }
+  class IfStmt <<NonterminalExpression>> <<record>> {
+    +condition: BoolExpression
+    +thenBlock: BlockStmt
+    +elseBranch: Statement
+  }
+  class CallStmt <<NonterminalExpression>> {
+    +name(): String
+    +bind(target: ProcDef)
+    +target(): ProcDef
+  }
+  class NotCond <<NonterminalExpression>> <<record>> {
+    +operand: BoolExpression
+  }
+  class AndCond <<NonterminalExpression>> <<record>> {
+    +left: BoolExpression
+    +right: BoolExpression
+  }
+  class OrCond <<NonterminalExpression>> <<record>> {
+    +left: BoolExpression
+    +right: BoolExpression
+  }
+}
+
+package "robolang.lang.runtime" {
+  class Context <<Context>> {
+    +world(): World
+    +tick(node: AstNode)
+    +move(node: AstNode)
+    +turn(node: AstNode, d: TurnDirection)
+    +pick(node: AstNode)
+    +enterCall(call: CallStmt)
+    +exitCall()
+    +ticks(): long
+    +actions(): int
+    +requestStop()
+  }
+  interface ExecutionListener <<Observer>> {
+    +variantStarted(variantIndex: int, initial: WorldSnapshot)
+    +nodeEntered(node: AstNode)
+    +actionPerformed(node: AstNode, after: WorldSnapshot)
+  }
+  class ExecutionLimits <<record>> {
+    +maxTicks: int
+    +maxCallDepth: int
+  }
+  class ProgramRunner <<Client>> {
+    +{static} run(program, level, limits, listener): Outcome
+  }
+  class Outcome <<record>>
+}
+
+package "robolang.lang.parser" {
+  class Parser <<Client>> {
+    +{static} parse(source: String): Program
+  }
+  class StaticChecker {
+    +{static} check(program: Program, allowedKeywords: Set<String>)
+  }
+}
+
+package "robolang.ui" {
+  class ExecutionController <<Client>>
+}
+
+package "robolang.model" {
+  class World
+}
+
+AstNode <|-- Statement
+AstNode <|-- BoolExpression
+AstNode <|.. Program
+AstNode <|.. ProcDef
+
+Statement <|.. MoveStmt
+Statement <|.. TurnStmt
+Statement <|.. PickStmt
+Statement <|.. BlockStmt
+Statement <|.. RepeatStmt
+Statement <|.. WhileStmt
+Statement <|.. IfStmt
+Statement <|.. CallStmt
+BoolExpression <|.. WallAheadCond
+BoolExpression <|.. OnItemCond
+BoolExpression <|.. AtGoalCond
+BoolExpression <|.. NotCond
+BoolExpression <|.. AndCond
+BoolExpression <|.. OrCond
+
+Program o--> "0..20" ProcDef : procedures
+Program o--> "1" BlockStmt : main
+ProcDef o--> "1" BlockStmt : body
+BlockStmt o--> "0..*" Statement : statements
+RepeatStmt o--> "1" BlockStmt : body
+WhileStmt o--> "1" BoolExpression : condition
+WhileStmt o--> "1" BlockStmt : body
+IfStmt o--> "1" BoolExpression : condition
+IfStmt o--> "1" BlockStmt : thenBlock
+IfStmt o--> "0..1" Statement : elseBranch
+CallStmt --> "0..1" ProcDef : target (bound by StaticChecker)
+NotCond o--> "1" BoolExpression : operand
+AndCond o--> "2" BoolExpression : left, right
+OrCond o--> "2" BoolExpression : left, right
+
+Statement ..> Context : interpret
+BoolExpression ..> Context : evaluate
+Program ..> Context : execute
+Context --> World
+Context --> ExecutionLimits
+Context --> ExecutionListener : notifies
+Context ..> CallStmt
+
+Parser ..> Program : builds
+StaticChecker ..> Program : checks, binds CALLs
+ProgramRunner ..> Program : execute
+ProgramRunner ..> Context : creates per variant
+ProgramRunner ..> Outcome
+ExecutionController ..> Parser
+ExecutionController ..> StaticChecker
+ExecutionController ..> ProgramRunner
+@enduml

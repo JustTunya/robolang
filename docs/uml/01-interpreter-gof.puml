@@ -1,0 +1,29 @@
+@startuml 01-interpreter-gof
+title Interpreter pattern (GoF) - structure
+hide empty members
+skinparam classAttributeIconSize 0
+
+class Client
+class Context
+abstract class AbstractExpression {
+  +interpret(context: Context)
+}
+class TerminalExpression {
+  +interpret(context: Context)
+}
+class NonterminalExpression {
+  +interpret(context: Context)
+}
+
+Client ..> Context
+Client ..> AbstractExpression
+AbstractExpression ..> Context
+NonterminalExpression o-> "1..*" AbstractExpression : expressions
+AbstractExpression <|-- TerminalExpression
+AbstractExpression <|-- NonterminalExpression
+
+note right of Client
+  Builds (or receives) the abstract
+  syntax tree and calls interpret().
+end note
+@enduml
