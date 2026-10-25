@@ -1,9 +1,14 @@
 package robolang.app;
 
-import javax.swing.JFrame;
+import java.util.List;
 import javax.swing.SwingUtilities;
+import robolang.model.Level;
+import robolang.model.LevelLoader;
+import robolang.theme.ThemeFactory;
+import robolang.theme.ThemeRegistry;
+import robolang.ui.MainFrame;
 
-/** Application entry point. T05 replaces the empty window with the real UI. */
+/** Application entry point. */
 public final class Main {
     private Main() {
     }
@@ -15,11 +20,35 @@ public final class Main {
      */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("RoboLang");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(960, 640);
-            frame.setLocationRelativeTo(null);
+            MainFrame frame = new MainFrame();
+            frame.setThemes(themes(), defaultTheme());
+            frame.setLevels(levels());
             frame.setVisible(true);
         });
+    }
+
+    // The loaders may still be stubs; the window then starts without levels or themes.
+    private static List<Level> levels() {
+        try {
+            return LevelLoader.loadAll();
+        } catch (UnsupportedOperationException e) {
+            return List.of();
+        }
+    }
+
+    private static List<ThemeFactory> themes() {
+        try {
+            return ThemeRegistry.all();
+        } catch (UnsupportedOperationException e) {
+            return List.of();
+        }
+    }
+
+    private static ThemeFactory defaultTheme() {
+        try {
+            return ThemeRegistry.defaultTheme();
+        } catch (UnsupportedOperationException e) {
+            return null;
+        }
     }
 }
