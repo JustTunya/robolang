@@ -1,0 +1,15 @@
+title: Staircase
+briefing: Climb the staircase to the goal. A REPEAT inside a REPEAT lets you repeat a pattern of loops.
+keywords: MOVE TURN LEFT RIGHT REPEAT PICK
+par-instructions: 7
+par-actions: 18
+grid:
+#########
+#######G#
+#######.#
+#####...#
+#####.###
+###...###
+###.#####
+#>..#####
+#########

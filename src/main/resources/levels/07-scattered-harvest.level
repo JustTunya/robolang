@@ -1,0 +1,13 @@
+title: Scattered Harvest
+briefing: The items sit on different cells each time. IF ON_ITEM { ... } acts only when you stand on one.
+keywords: MOVE TURN LEFT RIGHT REPEAT PICK WHILE NOT WALL_AHEAD IF ON_ITEM
+par-instructions: 4
+par-actions: 21
+grid:
+##########
+#>.*..*.G#
+##########
+grid:
+############
+#>*..*.*..G#
+############

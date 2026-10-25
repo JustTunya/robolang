@@ -1,2 +1,11 @@
 # campaign order, one base name per line
 01-first-steps
+02-corners
+03-long-hall
+04-harvest
+05-staircase
+06-unknown-corridor
+07-scattered-harvest
+08-fork-in-the-road
+09-patterns
+10-the-maze

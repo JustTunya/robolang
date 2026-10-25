@@ -1,0 +1,4 @@
+WHILE NOT WALL_AHEAD {
+    IF ON_ITEM { PICK }
+    MOVE
+}

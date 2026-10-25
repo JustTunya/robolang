@@ -1,0 +1,11 @@
+title: Corners
+briefing: Reach the goal around the corner. TURN LEFT or TURN RIGHT rotates the robot.
+keywords: MOVE TURN LEFT RIGHT
+par-instructions: 7
+par-actions: 7
+grid:
+#######
+#>....#
+#####.#
+#####G#
+#######

@@ -1,0 +1,10 @@
+DEF step {
+    TURN RIGHT
+    WHILE WALL_AHEAD { TURN LEFT }
+    MOVE
+}
+
+WHILE NOT AT_GOAL {
+    IF ON_ITEM { PICK }
+    CALL step
+}

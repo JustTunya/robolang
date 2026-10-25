@@ -1,0 +1,5 @@
+REPEAT 3 {
+    MOVE MOVE
+    PICK
+}
+MOVE

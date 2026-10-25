@@ -1,0 +1,10 @@
+title: Patterns
+briefing: Collect the three item groups. DEF name { ... } defines a procedure, CALL name runs it.
+keywords: MOVE TURN LEFT RIGHT REPEAT PICK WHILE NOT WALL_AHEAD IF ON_ITEM ELSE AND OR DEF CALL
+par-instructions: 19
+par-actions: 36
+grid:
+############
+#>*...*..*G#
+#.**..**.**#
+############
