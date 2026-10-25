@@ -8,24 +8,28 @@ import robolang.lang.runtime.Context;
  */
 public record Program(List<ProcDef> procedures, BlockStmt main, SourceRange range) implements AstNode {
 
-    /** {@inheritDoc} Implemented by T03. */
+    /** {@inheritDoc} */
     @Override
     public String label() {
-        throw new UnsupportedOperationException("T03");
+        return "Program";
     }
 
-    /** {@inheritDoc} Implemented by T03. */
+    /** {@inheritDoc} */
     @Override
     public int instructionCount() {
-        throw new UnsupportedOperationException("T03");
+        int n = main.instructionCount();
+        for (ProcDef p : procedures) {
+            n += p.instructionCount();
+        }
+        return n;
     }
 
     /**
-     * Executes the main block of this program against the context. Implemented by T03.
+     * Executes the main block of this program against the context.
      *
      * @param ctx execution context
      */
     public void execute(Context ctx) {
-        throw new UnsupportedOperationException("T03");
+        main.interpret(ctx);
     }
 }

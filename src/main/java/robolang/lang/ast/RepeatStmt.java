@@ -7,21 +7,24 @@ import robolang.lang.runtime.Context;
  */
 public record RepeatStmt(int count, BlockStmt body, SourceRange range) implements Statement {
 
-    /** {@inheritDoc} Implemented by T03. */
+    /** {@inheritDoc} */
     @Override
     public void interpret(Context ctx) {
-        throw new UnsupportedOperationException("T03");
+        for (int i = 0; i < count; i++) {
+            ctx.tick(this);
+            body.interpret(ctx);
+        }
     }
 
-    /** {@inheritDoc} Implemented by T03. */
+    /** {@inheritDoc} */
     @Override
     public String label() {
-        throw new UnsupportedOperationException("T03");
+        return "REPEAT " + count;
     }
 
-    /** {@inheritDoc} Implemented by T03. */
+    /** {@inheritDoc} */
     @Override
     public int instructionCount() {
-        throw new UnsupportedOperationException("T03");
+        return 1 + body.instructionCount();
     }
 }

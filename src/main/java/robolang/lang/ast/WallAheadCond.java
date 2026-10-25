@@ -7,21 +7,22 @@ import robolang.lang.runtime.Context;
  */
 public record WallAheadCond(SourceRange range) implements BoolExpression {
 
-    /** {@inheritDoc} Implemented by T03. */
+    /** {@inheritDoc} */
     @Override
     public boolean evaluate(Context ctx) {
-        throw new UnsupportedOperationException("T03");
+        ctx.tick(this);
+        return ctx.world().wallAhead();
     }
 
-    /** {@inheritDoc} Implemented by T03. */
+    /** {@inheritDoc} */
     @Override
     public String label() {
-        throw new UnsupportedOperationException("T03");
+        return "WALL_AHEAD";
     }
 
-    /** {@inheritDoc} Implemented by T03. */
+    /** {@inheritDoc} */
     @Override
     public int instructionCount() {
-        throw new UnsupportedOperationException("T03");
+        return 0;
     }
 }

@@ -7,21 +7,27 @@ import robolang.lang.runtime.Context;
  */
 public record WhileStmt(BoolExpression condition, BlockStmt body, SourceRange range) implements Statement {
 
-    /** {@inheritDoc} Implemented by T03. */
+    /** {@inheritDoc} */
     @Override
     public void interpret(Context ctx) {
-        throw new UnsupportedOperationException("T03");
+        while (true) {
+            ctx.tick(this);
+            if (!condition.evaluate(ctx)) {
+                return;
+            }
+            body.interpret(ctx);
+        }
     }
 
-    /** {@inheritDoc} Implemented by T03. */
+    /** {@inheritDoc} */
     @Override
     public String label() {
-        throw new UnsupportedOperationException("T03");
+        return "WHILE " + condition.label();
     }
 
-    /** {@inheritDoc} Implemented by T03. */
+    /** {@inheritDoc} */
     @Override
     public int instructionCount() {
-        throw new UnsupportedOperationException("T03");
+        return 1 + body.instructionCount();
     }
 }

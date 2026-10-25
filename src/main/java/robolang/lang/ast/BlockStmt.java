@@ -8,21 +8,27 @@ import robolang.lang.runtime.Context;
  */
 public record BlockStmt(List<Statement> statements, SourceRange range) implements Statement {
 
-    /** {@inheritDoc} Implemented by T03. */
+    /** {@inheritDoc} */
     @Override
     public void interpret(Context ctx) {
-        throw new UnsupportedOperationException("T03");
+        for (Statement s : statements) {
+            s.interpret(ctx);
+        }
     }
 
-    /** {@inheritDoc} Implemented by T03. */
+    /** {@inheritDoc} */
     @Override
     public String label() {
-        throw new UnsupportedOperationException("T03");
+        return "Block";
     }
 
-    /** {@inheritDoc} Implemented by T03. */
+    /** {@inheritDoc} */
     @Override
     public int instructionCount() {
-        throw new UnsupportedOperationException("T03");
+        int n = 0;
+        for (Statement s : statements) {
+            n += s.instructionCount();
+        }
+        return n;
     }
 }

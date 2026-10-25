@@ -5,15 +5,15 @@ package robolang.lang.ast;
  */
 public record ProcDef(String name, BlockStmt body, SourceRange range) implements AstNode {
 
-    /** {@inheritDoc} Implemented by T03. */
+    /** {@inheritDoc} */
     @Override
     public String label() {
-        throw new UnsupportedOperationException("T03");
+        return "DEF " + name;
     }
 
-    /** {@inheritDoc} Implemented by T03. */
+    /** {@inheritDoc} */
     @Override
     public int instructionCount() {
-        throw new UnsupportedOperationException("T03");
+        return 1 + body.instructionCount();
     }
 }
