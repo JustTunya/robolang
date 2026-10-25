@@ -22,6 +22,7 @@ import javax.swing.text.Document;
 import javax.swing.text.Element;
 import javax.swing.text.Highlighter;
 import robolang.lang.ast.SourceRange;
+import robolang.ui.highlight.SyntaxHighlighter;
 
 /** The program editor: a monospace {@link JTextPane} with a line-number gutter (SPEC §7.2). */
 @SuppressWarnings("serial")
@@ -56,6 +57,7 @@ public final class CodeEditorPanel extends JPanel {
         JScrollPane scroll = new JScrollPane(pane);
         scroll.setRowHeaderView(new Gutter());
         add(scroll);
+        SyntaxHighlighter.install(pane);
     }
 
     /**
