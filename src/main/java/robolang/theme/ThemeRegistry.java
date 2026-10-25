@@ -1,37 +1,41 @@
 package robolang.theme;
 
 import java.util.List;
+import robolang.theme.jungle.JungleThemeFactory;
+import robolang.theme.space.SpaceThemeFactory;
 
 /** The only place that names concrete theme factories (D7). */
 public final class ThemeRegistry {
+    private static final List<ThemeFactory> ALL = List.of(SpaceThemeFactory.INSTANCE, JungleThemeFactory.INSTANCE);
+
     private ThemeRegistry() {
     }
 
     /**
-     * Lists the available themes. Implemented by T04.
+     * Lists the available themes, Space first.
      *
      * @return all factories
      */
     public static List<ThemeFactory> all() {
-        throw new UnsupportedOperationException("T04");
+        return ALL;
     }
 
     /**
-     * Finds a theme by name. Implemented by T04.
+     * Finds a theme by name, ignoring case. Unknown names fall back to {@link #defaultTheme()}.
      *
      * @param name theme name
      * @return the matching factory
      */
     public static ThemeFactory byName(String name) {
-        throw new UnsupportedOperationException("T04");
+        return ALL.stream().filter(f -> f.name().equalsIgnoreCase(name)).findFirst().orElse(defaultTheme());
     }
 
     /**
-     * Returns the default theme. Implemented by T04.
+     * Returns the default theme (Space).
      *
      * @return the default factory
      */
     public static ThemeFactory defaultTheme() {
-        throw new UnsupportedOperationException("T04");
+        return ALL.get(0);
     }
 }
