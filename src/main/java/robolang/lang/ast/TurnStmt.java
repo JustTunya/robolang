@@ -7,21 +7,22 @@ import robolang.lang.runtime.Context;
  */
 public record TurnStmt(TurnDirection direction, SourceRange range) implements Statement {
 
-    /** {@inheritDoc} Implemented by T03. */
+    /** {@inheritDoc} */
     @Override
     public void interpret(Context ctx) {
-        throw new UnsupportedOperationException("T03");
+        ctx.tick(this);
+        ctx.turn(this, direction);
     }
 
-    /** {@inheritDoc} Implemented by T03. */
+    /** {@inheritDoc} */
     @Override
     public String label() {
-        throw new UnsupportedOperationException("T03");
+        return "TURN " + direction;
     }
 
-    /** {@inheritDoc} Implemented by T03. */
+    /** {@inheritDoc} */
     @Override
     public int instructionCount() {
-        throw new UnsupportedOperationException("T03");
+        return 1;
     }
 }

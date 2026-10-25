@@ -55,21 +55,27 @@ public final class CallStmt implements Statement {
         return target;
     }
 
-    /** {@inheritDoc} Implemented by T03. */
+    /** {@inheritDoc} */
     @Override
     public void interpret(Context ctx) {
-        throw new UnsupportedOperationException("T03");
+        ctx.tick(this);
+        ctx.enterCall(this);
+        try {
+            target.body().interpret(ctx);
+        } finally {
+            ctx.exitCall();
+        }
     }
 
-    /** {@inheritDoc} Implemented by T03. */
+    /** {@inheritDoc} */
     @Override
     public String label() {
-        throw new UnsupportedOperationException("T03");
+        return "CALL " + name;
     }
 
-    /** {@inheritDoc} Implemented by T03. */
+    /** {@inheritDoc} */
     @Override
     public int instructionCount() {
-        throw new UnsupportedOperationException("T03");
+        return 1;
     }
 }

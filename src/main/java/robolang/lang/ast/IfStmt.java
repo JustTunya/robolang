@@ -7,21 +7,26 @@ import robolang.lang.runtime.Context;
  */
 public record IfStmt(BoolExpression condition, BlockStmt thenBlock, Statement elseBranch, SourceRange range) implements Statement {
 
-    /** {@inheritDoc} Implemented by T03. */
+    /** {@inheritDoc} */
     @Override
     public void interpret(Context ctx) {
-        throw new UnsupportedOperationException("T03");
+        ctx.tick(this);
+        if (condition.evaluate(ctx)) {
+            thenBlock.interpret(ctx);
+        } else if (elseBranch != null) {
+            elseBranch.interpret(ctx);
+        }
     }
 
-    /** {@inheritDoc} Implemented by T03. */
+    /** {@inheritDoc} */
     @Override
     public String label() {
-        throw new UnsupportedOperationException("T03");
+        return "IF " + condition.label();
     }
 
-    /** {@inheritDoc} Implemented by T03. */
+    /** {@inheritDoc} */
     @Override
     public int instructionCount() {
-        throw new UnsupportedOperationException("T03");
+        return 1 + thenBlock.instructionCount() + (elseBranch == null ? 0 : elseBranch.instructionCount());
     }
 }

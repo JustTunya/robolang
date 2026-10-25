@@ -7,21 +7,22 @@ import robolang.lang.runtime.Context;
  */
 public record OrCond(BoolExpression left, BoolExpression right, SourceRange range) implements BoolExpression {
 
-    /** {@inheritDoc} Implemented by T03. */
+    /** {@inheritDoc} */
     @Override
     public boolean evaluate(Context ctx) {
-        throw new UnsupportedOperationException("T03");
+        ctx.tick(this);
+        return left.evaluate(ctx) || right.evaluate(ctx);
     }
 
-    /** {@inheritDoc} Implemented by T03. */
+    /** {@inheritDoc} */
     @Override
     public String label() {
-        throw new UnsupportedOperationException("T03");
+        return AndCond.operandLabel(left) + " OR " + AndCond.operandLabel(right);
     }
 
-    /** {@inheritDoc} Implemented by T03. */
+    /** {@inheritDoc} */
     @Override
     public int instructionCount() {
-        throw new UnsupportedOperationException("T03");
+        return 0;
     }
 }

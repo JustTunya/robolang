@@ -8,7 +8,7 @@ public final class Scoring {
     }
 
     /**
-     * Computes the stars for a run. Implemented by T03.
+     * Computes the stars for a run.
      *
      * @param solved whether the level was solved
      * @param instructionCount static instruction count
@@ -17,6 +17,10 @@ public final class Scoring {
      * @return 0 to 3 stars
      */
     public static int stars(boolean solved, int instructionCount, int totalActions, Level level) {
-        throw new UnsupportedOperationException("T03");
+        if (!solved) {
+            return 0;
+        }
+        return 1 + (instructionCount <= level.parInstructions() ? 1 : 0)
+                + (totalActions <= level.parActions() ? 1 : 0);
     }
 }
