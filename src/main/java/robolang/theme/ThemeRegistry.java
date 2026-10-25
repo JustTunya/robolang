@@ -2,11 +2,13 @@ package robolang.theme;
 
 import java.util.List;
 import robolang.theme.jungle.JungleThemeFactory;
+import robolang.theme.retro.RetroThemeFactory;
 import robolang.theme.space.SpaceThemeFactory;
 
 /** The only place that names concrete theme factories (D7). */
 public final class ThemeRegistry {
-    private static final List<ThemeFactory> ALL = List.of(SpaceThemeFactory.INSTANCE, JungleThemeFactory.INSTANCE);
+    private static final List<ThemeFactory> ALL = List.of(SpaceThemeFactory.INSTANCE, JungleThemeFactory.INSTANCE,
+            RetroThemeFactory.INSTANCE);
 
     private ThemeRegistry() {
     }

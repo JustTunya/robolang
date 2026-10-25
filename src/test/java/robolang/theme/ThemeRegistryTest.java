@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 
 class ThemeRegistryTest {
     @Test
-    void allListsSpaceThenJungle() {
-        assertEquals(List.of("Space", "Jungle"), ThemeRegistry.all().stream().map(ThemeFactory::name).toList());
+    void allListsSpaceJungleThenRetro() {
+        assertEquals(List.of("Space", "Jungle", "Retro"), ThemeRegistry.all().stream().map(ThemeFactory::name).toList());
     }
 
     @Test
