@@ -32,6 +32,7 @@ public final class MainFrame extends JFrame {
     private final StatusBar statusBar = new StatusBar();
     private final JComboBox<Level> levelSelector = new JComboBox<>();
     private final JComboBox<ThemeFactory> themeSelector = new JComboBox<>();
+    private final AstTreePanel astTree = new AstTreePanel(editor);
     private final JPanel rightSlot = new JPanel(new BorderLayout());
 
     /** Creates the window; call {@link #setLevels} and {@link #setThemes} to fill the selectors. */
@@ -60,7 +61,7 @@ public final class MainFrame extends JFrame {
         levelSelector.addActionListener(e -> showLevel((Level) levelSelector.getSelectedItem()));
 
         setJMenuBar(menuBar());
-        setRightPanel(placeholder("AST tree"));
+        setRightPanel(astTree);
 
         JPanel center = new JPanel(new GridBagLayout());
         addColumn(center, editor, 0, 0.28);
@@ -85,6 +86,15 @@ public final class MainFrame extends JFrame {
      */
     public CodeEditorPanel editor() {
         return editor;
+    }
+
+    /**
+     * Returns the AST tree panel; the run controller registers it as an {@link ExecutionObserver}.
+     *
+     * @return the AST tree panel
+     */
+    public AstTreePanel astTree() {
+        return astTree;
     }
 
     /**
