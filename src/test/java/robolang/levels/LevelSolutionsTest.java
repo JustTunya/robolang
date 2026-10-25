@@ -109,12 +109,21 @@ class LevelSolutionsTest {
     void patternsCallBeatsRepeatOnly() {
         Level l = level(9);
         String grab = "PICK TURN RIGHT MOVE PICK TURN LEFT MOVE PICK TURN LEFT MOVE TURN RIGHT ";
-        String repeatOnly = "MOVE " + grab + "REPEAT 3 { MOVE } " + grab + "REPEAT 2 { MOVE } " + grab;
+        String repeatOnly = "MOVE " + grab + "REPEAT 2 { MOVE } TURN RIGHT REPEAT 2 { MOVE } TURN LEFT " + grab
+                + "REPEAT 3 { MOVE } TURN LEFT REPEAT 2 { MOVE } TURN RIGHT " + grab;
         Set<String> noProcedures = new HashSet<>(l.keywords());
         noProcedures.removeAll(Set.of("DEF", "CALL"));
         Outcome o = run(repeatOnly, l, noProcedures);
         assertTrue(o.success(), o.message());
-        assertEquals(35, o.instructionCount());
+        assertEquals(43, o.instructionCount());
         assertTrue(o.instructionCount() > l.parInstructions());
+    }
+
+    /** The two-row scan that beat the first version of level 9 now crashes on the pillars. */
+    @Test
+    void patternsScanSolutionFails() {
+        String snake = "REPEAT 2 { WHILE NOT WALL_AHEAD { IF ON_ITEM { PICK } MOVE } TURN RIGHT MOVE TURN RIGHT } "
+                + "WHILE NOT WALL_AHEAD { MOVE }";
+        assertFalse(run(snake, level(9)).success());
     }
 }
