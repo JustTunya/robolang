@@ -59,4 +59,13 @@ class AstTreePanelTest {
         panel.tree().setSelectionRow(2); // REPEAT 2
         assertEquals(SRC, editor.textPane().getSelectedText());
     }
+
+    @Test
+    void failureOnSoleStatementHighlightsStatementNotProgram() {
+        Program single = Parser.parse("MOVE");
+        panel.programParsed(single);
+        SourceRange where = single.main().statements().get(0).range();
+        panel.runFinished(new Outcome(false, FailureKind.CRASH, "x", where, 0, 1, 0, 0, 0));
+        assertSame(single.main().statements().get(0), panel.highlightedItem().node());
+    }
 }

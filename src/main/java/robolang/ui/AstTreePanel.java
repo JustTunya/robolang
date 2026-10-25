@@ -17,6 +17,8 @@ import javax.swing.tree.TreePath;
 
 import robolang.lang.ast.AstNode;
 import robolang.lang.ast.BlockStmt;
+import robolang.lang.ast.BoolExpression;
+import robolang.lang.ast.Statement;
 import robolang.lang.ast.Program;
 import robolang.lang.runtime.Outcome;
 import robolang.ui.ast.AstTreeBuilder;
@@ -108,8 +110,8 @@ public final class AstTreePanel extends JPanel implements ExecutionObserver {
         }
         DefaultMutableTreeNode failed = null;
         for (Map.Entry<AstNode, DefaultMutableTreeNode> e : nodes.entrySet()) {
-            // Blocks share their range with the statement or row that owns them; the owner is what failed.
-            if (!(e.getKey() instanceof BlockStmt) && outcome.location().equals(e.getKey().range())) {
+            // Program, DEF and blocks can share a range with the statement they wrap; only ticked nodes fail.
+            if (!(e.getKey() instanceof BlockStmt) && (e.getKey() instanceof Statement || e.getKey() instanceof BoolExpression) && outcome.location().equals(e.getKey().range())) {
                 failed = e.getValue();
                 break;
             }
