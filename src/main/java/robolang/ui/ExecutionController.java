@@ -191,7 +191,7 @@ public final class ExecutionController implements ControlListener {
     private void finish(Outcome outcome) {
         view.clearHighlights();
         view.selectVariant(current.pacer.variant());
-        view.setCounters(current.pacer.actions(), current.pacer.ticks());
+        view.setCounters(outcome.totalActions(), outcome.totalTicks());
         if (current.shownActions != current.pacer.actions()) {
             view.showSnapshot(current.pacer.lastSnapshot(), 0);
         }
@@ -290,9 +290,12 @@ public final class ExecutionController implements ControlListener {
                     }
                     case PausedChunk p -> {
                         machine.fire(Event.PAUSE);
-                        view.showSnapshot(pacer.lastSnapshot(), PacingListener.animationMillis(view.speed()));
-                        view.setCounters(pacer.actions(), pacer.ticks());
-                        shownActions = pacer.actions();
+                        // Instant publishes no actions; re-showing a shown snapshot would cancel its animation.
+                        if (shownActions != pacer.actions()) {
+                            view.showSnapshot(pacer.lastSnapshot(), 0);
+                            view.setCounters(pacer.actions(), pacer.ticks());
+                            shownActions = pacer.actions();
+                        }
                     }
                 }
             }
