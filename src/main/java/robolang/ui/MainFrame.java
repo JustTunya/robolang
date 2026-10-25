@@ -22,6 +22,7 @@ import robolang.model.Level;
 import robolang.model.Variant;
 import robolang.model.WorldSnapshot;
 import robolang.theme.ThemeFactory;
+import robolang.ui.execution.SwingExecutionView;
 
 /** The main window (SPEC §7.1): editor | grid | right slot, control bar and status bar. */
 @SuppressWarnings("serial")
@@ -33,6 +34,8 @@ public final class MainFrame extends JFrame {
     private final JComboBox<Level> levelSelector = new JComboBox<>();
     private final JComboBox<ThemeFactory> themeSelector = new JComboBox<>();
     private final JPanel rightSlot = new JPanel(new BorderLayout());
+    private final ExecutionController execution = new ExecutionController(
+            new SwingExecutionView(editor, grid, controls, statusBar));
 
     /** Creates the window; call {@link #setLevels} and {@link #setThemes} to fill the selectors. */
     public MainFrame() {
@@ -58,6 +61,9 @@ public final class MainFrame extends JFrame {
         });
         themeSelector.addActionListener(e -> grid.setTheme((ThemeFactory) themeSelector.getSelectedItem()));
         levelSelector.addActionListener(e -> showLevel((Level) levelSelector.getSelectedItem()));
+        controls.addControlListener(execution);
+        editor.addEditListener(execution::onEdit);
+        onLevelSelected(execution::setLevel);
 
         setJMenuBar(menuBar());
         setRightPanel(placeholder("AST tree"));
@@ -154,6 +160,7 @@ public final class MainFrame extends JFrame {
     public void setLevels(List<Level> levels) {
         levelSelector.setModel(new DefaultComboBoxModel<>(levels.toArray(new Level[0])));
         showLevel(levels.isEmpty() ? null : levels.get(0));
+        execution.setLevel(levels.isEmpty() ? null : levels.get(0));
     }
 
     /**
@@ -168,6 +175,15 @@ public final class MainFrame extends JFrame {
             themeSelector.setSelectedItem(selected);
         }
         grid.setTheme((ThemeFactory) themeSelector.getSelectedItem());
+    }
+
+    /**
+     * Returns the execution controller, e.g. to register an {@link ExecutionObserver}.
+     *
+     * @return the controller
+     */
+    public ExecutionController execution() {
+        return execution;
     }
 
     /**
