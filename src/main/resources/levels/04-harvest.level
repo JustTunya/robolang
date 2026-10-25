@@ -1,0 +1,9 @@
+title: Harvest
+briefing: Collect every item with PICK, then stand on the goal.
+keywords: MOVE TURN LEFT RIGHT REPEAT PICK
+par-instructions: 5
+par-actions: 10
+grid:
+##########
+#>.*.*.*G#
+##########

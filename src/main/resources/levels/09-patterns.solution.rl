@@ -1,0 +1,18 @@
+DEF grab {
+    PICK
+    TURN RIGHT
+    MOVE
+    PICK
+    TURN LEFT
+    MOVE
+    PICK
+    TURN LEFT
+    MOVE
+    TURN RIGHT
+}
+MOVE
+CALL grab
+REPEAT 3 { MOVE }
+CALL grab
+REPEAT 2 { MOVE }
+CALL grab

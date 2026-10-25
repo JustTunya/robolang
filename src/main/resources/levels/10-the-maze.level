@@ -1,0 +1,37 @@
+title: The Maze
+briefing: Pick up every item and reach the goal in three mazes. AT_GOAL tells you when you have arrived.
+keywords: MOVE TURN LEFT RIGHT REPEAT PICK WHILE NOT WALL_AHEAD IF ON_ITEM ELSE AND OR DEF CALL AT_GOAL
+par-instructions: 9
+par-actions: 376
+grid:
+#########
+#>..#...#
+#.#.#.#.#
+#.#.*.#.#
+#.#####.#
+#.*.#...#
+###.#*#.#
+#...#..G#
+#########
+grid:
+##########
+#>...*...#
+#.######.#
+#.#.*..#.#
+#.#.##.#.#
+#...#..#.#
+#.###.##.#
+#..*..#G.#
+##########
+grid:
+###########
+#v#..*..#.#
+#.#.###.#.#
+#.#...#.#.#
+#.###.#...#
+#.*.#.###.#
+###.#...#.#
+#...###.#.#
+#.#####.#G#
+#...*...###
+###########

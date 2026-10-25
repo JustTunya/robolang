@@ -1,0 +1,6 @@
+REPEAT 3 {
+    REPEAT 2 { MOVE }
+    TURN LEFT
+    REPEAT 2 { MOVE }
+    TURN RIGHT
+}

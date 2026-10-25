@@ -1,0 +1,25 @@
+title: Fork in the Road
+briefing: Follow the corridor to the goal; the open side changes each time. ELSE, AND and OR combine and split your tests.
+keywords: MOVE TURN LEFT RIGHT REPEAT PICK WHILE NOT WALL_AHEAD IF ON_ITEM ELSE AND OR
+par-instructions: 7
+par-actions: 46
+grid:
+#########
+####...G#
+####.####
+####.####
+#>...####
+#########
+grid:
+#########
+#>...####
+####.####
+####.####
+####...G#
+#########
+grid:
+#########
+##G...###
+#####.###
+#>....###
+#########

@@ -1,0 +1,13 @@
+title: Unknown Corridor
+briefing: The corridor length changes. WHILE NOT WALL_AHEAD { ... } repeats until a wall is in front.
+keywords: MOVE TURN LEFT RIGHT REPEAT PICK WHILE NOT WALL_AHEAD
+par-instructions: 2
+par-actions: 14
+grid:
+#########
+#>.....G#
+#########
+grid:
+###########
+#>.......G#
+###########
