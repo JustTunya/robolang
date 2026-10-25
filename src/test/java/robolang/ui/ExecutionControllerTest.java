@@ -179,9 +179,12 @@ class ExecutionControllerTest {
     void stepPausesAfterOneActionThenStopEndsRun() throws Exception {
         view.source = "MOVE\nMOVE\nMOVE\nMOVE\nMOVE";
         view.speed = 20;
+        int before = view.snapshots;
         onEdt(controller::onStep);
         await(() -> controller.state() == ExecState.PAUSED);
         assertEquals(ExecState.PAUSED, view.state);
+        // variant start + the one action; the paused chunk must not re-show (and so cancel) the animation
+        assertEquals(before + 2, view.snapshots);
 
         onEdt(controller::onStop);
         await(() -> controller.state() == ExecState.FAILED);
